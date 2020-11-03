@@ -13,5 +13,5 @@ count:
 	jmp		count
 
 end:
-	pop		rbp
+	leave
 	ret
