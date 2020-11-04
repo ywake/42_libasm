@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/04 02:01:16 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/04 02:18:20 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ void	test_strcpy(int destsize, char *src)
 	free(dst4libc);
 }
 
+void	test_strcmp(char *s1, char *s2)
+{
+	printf("--strcmp(`%s`, `%s`)--\n", s1, s2);
+	printf("libc  : %d\n", strcmp(s1, s2));
+	printf("libasm: %d\n", ft_strcmp(s1, s2));
+}
+
 int	main(void)
 {
 	printf("==============\n=== strlen ===\n==============\n");
@@ -59,4 +66,13 @@ int	main(void)
 	test_strcpy(0, "");
 	// test_strcpy(4, NULL); // crash
 	// test_strcpy(0, NULL); // crash
+
+	printf("\n==============\n=== strcpy ===\n==============\n");
+	test_strcmp("test", "test");
+	test_strcmp("a", "a");
+	test_strcmp("", "");
+	// test_strcmp("test", NULL); // crash
+	test_strcmp("test", "Test");
+	test_strcmp("test", "");
+	test_strcmp("", "test");
 }
