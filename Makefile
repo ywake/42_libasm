@@ -6,7 +6,7 @@
 #    By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/29 17:26:49 by ywake             #+#    #+#              #
-#    Updated: 2020/11/05 18:33:10 by ywake            ###   ########.fr        #
+#    Updated: 2020/11/05 18:56:49 by ywake            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,3 +34,4 @@ re: fclean all
 
 test: $(NAME)
 	gcc -L. main.c -lasm -g -fsanitize=address
+	./a.out

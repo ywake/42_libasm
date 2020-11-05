@@ -6,14 +6,14 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:29 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/05 18:29:05 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/06 03:03:48 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBASM_H
 # define LIBASM_H
 
-# include <stddef.h>
+# include <sys/types.h>
 # include <errno.h>
 
 size_t	ft_strlen(char *str);

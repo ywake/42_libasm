@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/05 18:46:02 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/06 03:07:09 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <fcntl.h>
 #include "libasm.h"
 #include "logging.h"
+
+#define BUF_SIZE (15)
 
 void	test_strlen(char *str)
 {
@@ -119,9 +121,10 @@ void	test_read(char *filepath, int size)
 	/*
 	** evaluate
 	*/
-	printf((strcmp(buf_libc, buf_asm) == 0 && ret_libc == ret_asm && errno_libc == errno_asm) ? GREEN : RED);
-	printf("libc  : fd=%d, buf=[%s], ret=%zd, errno=%d\n", fd_libc, buf_libc, ret_libc, errno_libc);
-	printf("libasm: fd=%d, buf=[%s], ret=%zd, errno=%d\n", fd_asm, buf_asm, ret_asm, errno_asm);
+	int isSuccess = (strcmp(buf_libc, buf_asm) == 0 && ret_libc == ret_asm && errno_libc == errno_asm) ? 1 : 0;
+	printf(isSuccess ? GREEN : RED);
+	printf("libc  : fd=%d, buf=["YELLOW"%s%s], ret=%zd, errno=%d\n", fd_libc, buf_libc, isSuccess ? GREEN : RED, ret_libc, errno_libc);
+	printf("libasm: fd=%d, buf=["YELLOW"%s%s], ret=%zd, errno=%d\n", fd_asm, buf_asm, isSuccess ? GREEN : RED, ret_asm, errno_asm);
 	printf(RESET);
 
 	/*
@@ -131,6 +134,34 @@ void	test_read(char *filepath, int size)
 	close(fd_libc);
 	free(buf_asm);
 	close(fd_asm);
+}
+
+void	test_read_ex(int fd, char *buf_libc, char *buf_asm, int size)
+{
+	printf("--fd:%d, size:%d--\n", fd, size);
+	/*
+	** run libc
+	*/
+	errno = 0;
+	ssize_t ret_libc = read(fd, buf_libc, size);
+	buf_libc[BUF_SIZE] = 0;
+	int	errno_libc = errno;
+	/*
+	** run libasm
+	*/
+	errno = 0;
+	ssize_t ret_asm = ft_read(fd, buf_asm, size);
+	buf_asm[BUF_SIZE] = 0;
+	int	errno_asm = errno;
+
+	/*
+	** evaluate
+	*/
+	int isSuccess = (strcmp(buf_libc, buf_asm) == 0 && ret_libc == ret_asm && errno_libc == errno_asm) ? 1 : 0;
+	printf(isSuccess ? GREEN : RED);
+	printf("libc  : fd=%d, buf=["YELLOW"%s%s], ret=%zd, errno=%d\n", fd, buf_libc, isSuccess ? GREEN : RED, ret_libc, errno_libc);
+	printf("libasm: fd=%d, buf=["YELLOW"%s%s], ret=%zd, errno=%d\n", fd, buf_asm, isSuccess ? GREEN : RED, ret_asm, errno_asm);
+	printf(RESET);
 }
 
 int	main(void)
@@ -179,4 +210,11 @@ int	main(void)
 	test_read("test.txt", 100);
 	printf("\n~~~ error case ~~~\n");
 	test_read("nothing.txt", 10);
+	int fd = open("test.txt", O_RDONLY);
+	char *buf_libc = calloc(BUF_SIZE + 1, 1);
+	char *buf_asm = calloc(BUF_SIZE + 1, 1);
+	test_read_ex(fd, buf_libc, buf_asm, -1);
+	// test_read_ex(fd, NULL, NULL, 10); // crash
+	free(buf_libc);
+	free(buf_asm);
 }
