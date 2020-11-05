@@ -28,8 +28,7 @@ _ft_strcmp:
 	jmp		.end
 
 .lesend:
-	xor		rax, rax
-	sub		rax, 0x1
+	mov		rax, -0x1
 	jmp		.end
 
 .end:
