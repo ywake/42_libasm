@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/05 17:47:13 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/05 18:46:02 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <fcntl.h>
 #include "libasm.h"
 #include "logging.h"
 
@@ -73,21 +74,63 @@ void	test_write(int fd, char *str, int len)
 	// run libc
 	printf("libc  : "YELLOW);
 	fflush(stdout);
-	int ret_libc = write(fd, str, len);
+	ssize_t ret_libc = write(fd, str, len);
 	int	errno_libc = errno;
 	printf(RESET"\n");
 	errno = 0;
 	// run libasm
 	printf("libasm: "YELLOW);
 	fflush(stdout);
-	int ret_asm = ft_write(fd, str, len);
+	ssize_t ret_asm = ft_write(fd, str, len);
 	int errno_asm = errno;
 	printf(RESET"\n");
 
+	// evaluate
 	printf((ret_libc == ret_asm && errno_libc == errno_asm) ? GREEN : RED);
-	printf("libc  : ret=%d errno=%d\n", ret_libc, errno_libc);
-	printf("libasm: ret=%d errno=%d\n", ret_asm, errno_asm);
+	printf("libc  : ret=%zd errno=%d\n", ret_libc, errno_libc);
+	printf("libasm: ret=%zd errno=%d\n", ret_asm, errno_asm);
 	printf(RESET);
+}
+
+void	test_read(char *filepath, int size)
+{
+	printf("--%s, size:%d--\n", filepath, size);
+	/*
+	** run libc
+	*/
+	int fd_libc = open(filepath, O_RDONLY);
+	char *buf_libc = calloc(sizeof(char), size + 1);
+	errno = 0;
+	ssize_t ret_libc = read(fd_libc, buf_libc, size);
+	if (ret_libc >= 0)
+		buf_libc[ret_libc] = 0;
+	int	errno_libc = errno;
+	/*
+	** run libasm
+	*/
+	int fd_asm = open(filepath, O_RDONLY);
+	char *buf_asm = calloc(sizeof(char), size + 1);
+	errno = 0;
+	ssize_t ret_asm = ft_read(fd_asm, buf_asm, size);
+	if (ret_asm >= 0)
+		buf_asm[ret_asm] = 0;
+	int	errno_asm = errno;
+
+	/*
+	** evaluate
+	*/
+	printf((strcmp(buf_libc, buf_asm) == 0 && ret_libc == ret_asm && errno_libc == errno_asm) ? GREEN : RED);
+	printf("libc  : fd=%d, buf=[%s], ret=%zd, errno=%d\n", fd_libc, buf_libc, ret_libc, errno_libc);
+	printf("libasm: fd=%d, buf=[%s], ret=%zd, errno=%d\n", fd_asm, buf_asm, ret_asm, errno_asm);
+	printf(RESET);
+
+	/*
+	** destroy
+	*/
+	free(buf_libc);
+	close(fd_libc);
+	free(buf_asm);
+	close(fd_asm);
 }
 
 int	main(void)
@@ -118,7 +161,7 @@ int	main(void)
 	test_strcmp("test", "");
 	test_strcmp("", "test");
 
-	printf("\n==============\n=== write ===\n==============\n");
+	printf("\n==============\n=== write ====\n==============\n");
 	test_write(1, "test", 4);
 	test_write(1, "  ", 2);
 	// test_write(1, "", 2); // crush
@@ -128,4 +171,12 @@ int	main(void)
 	test_write(42, "test", 4);
 	test_write(42, "a", 1);
 	test_write(42, "123456789", 9);
+
+	printf("\n==============\n===  read  ===\n==============\n");
+	test_read("test.txt", 10);
+	test_read("test.txt", 5);
+	test_read("test.txt", 0);
+	test_read("test.txt", 100);
+	printf("\n~~~ error case ~~~\n");
+	test_read("nothing.txt", 10);
 }
