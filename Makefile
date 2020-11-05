@@ -6,12 +6,12 @@
 #    By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/29 17:26:49 by ywake             #+#    #+#              #
-#    Updated: 2020/11/04 02:18:30 by ywake            ###   ########.fr        #
+#    Updated: 2020/11/05 16:20:32 by ywake            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=libasm.a
-SRCS=ft_strlen.s ft_strcpy.s ft_strcmp.s
+SRCS=ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
 OBJS=$(SRCS:%.s=%.o)
 
 .PHONY: all clean fclean re test
