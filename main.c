@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/06 03:07:09 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/06 17:20:42 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	test_write(int fd, char *str, int len)
 	printf("libc  : ret=%zd errno=%d\n", ret_libc, errno_libc);
 	printf("libasm: ret=%zd errno=%d\n", ret_asm, errno_asm);
 	printf(RESET);
+	errno = 0;
 }
 
 void	test_read(char *filepath, int size)
@@ -134,6 +135,7 @@ void	test_read(char *filepath, int size)
 	close(fd_libc);
 	free(buf_asm);
 	close(fd_asm);
+	errno = 0;
 }
 
 void	test_read_ex(int fd, char *buf_libc, char *buf_asm, int size)
@@ -162,7 +164,46 @@ void	test_read_ex(int fd, char *buf_libc, char *buf_asm, int size)
 	printf("libc  : fd=%d, buf=["YELLOW"%s%s], ret=%zd, errno=%d\n", fd, buf_libc, isSuccess ? GREEN : RED, ret_libc, errno_libc);
 	printf("libasm: fd=%d, buf=["YELLOW"%s%s], ret=%zd, errno=%d\n", fd, buf_asm, isSuccess ? GREEN : RED, ret_asm, errno_asm);
 	printf(RESET);
+	errno = 0;
 }
+
+void	test_strdup(char *str)
+{
+	printf("--strdup(\""BOLD"%s"RESET"\")--\n", str);
+	// libc
+	char *ret_libc = strdup(str);
+	// libasm
+	char *ret_asm = ft_strdup(str);
+
+	printf((strcmp(ret_libc, ret_asm) == 0) ? GREEN : RED);
+	printf("libc  : %s\n", ret_libc);
+	printf("libasm: %s\n", ret_asm);
+	printf(RESET);
+
+	free(ret_libc);
+	free(ret_asm);
+	errno = 0;
+}
+
+// void	test_malloc(int size)
+// {
+// 	printf("--wirte("BOLD"%d"RESET")--\n", size);
+// 	/*
+// 	** run libc
+// 	*/
+// 	char *ret_libc = malloc(size);
+// 	int	errno_libc = errno;
+// 	printf("libc  : ret=%p errno=%d\n", ret_libc, errno_libc);
+// 	free(ret_libc);
+// 	errno = 0;
+// 	/*
+// 	** run libasm
+// 	*/
+// 	char *ret_asm = ft_malloc(size);
+// 	int errno_asm = errno;
+// 	printf("libasm: ret=%p errno=%d\n", ret_asm, errno_asm);
+// 	free(ret_asm);
+// }
 
 int	main(void)
 {
@@ -217,4 +258,11 @@ int	main(void)
 	// test_read_ex(fd, NULL, NULL, 10); // crash
 	free(buf_libc);
 	free(buf_asm);
+
+	printf("\n==============\n=== strdup ===\n==============\n");
+	test_strdup("test");
+	test_strdup("");
+	// test_strdup(NULL); // crash
+	// test_malloc(10);
+	// test_malloc(-1); // crash
 }
