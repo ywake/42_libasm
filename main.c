@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/06 17:20:42 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/08 07:11:44 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,64 +205,101 @@ void	test_strdup(char *str)
 // 	free(ret_asm);
 // }
 
-int	main(void)
+void	test_atoi_base(char *str, char *base)
 {
-	printf("==============\n=== strlen ===\n==============\n");
-	test_strlen("test");
-	test_strlen("");
-	test_strlen("あいうえお");
-	// test_strlen(NULL); // crash
+	int ret_num = ft_atoi_base(str, base);
+	printf("%d\n", ret_num);
+}
 
-	printf("\n==============\n=== strcpy ===\n==============\n");
-	test_strcpy(4, "test");
-	test_strcpy(4, "A");
-	test_strcpy(4, "");
-	// test_strcpy(1, "test"); // crash
-	test_strcpy(1, "A");
-	test_strcpy(0, "");
-	// test_strcpy(4, NULL); // crash
-	// test_strcpy(0, NULL); // crash
+int	main(int argc, char *argv[])
+{
+	char	flg = 0;
+	if (argc != 2)
+		flg = 1;
 
-	printf("\n==============\n=== strcmp ===\n==============\n");
-	test_strcmp("test", "test");
-	test_strcmp("a", "a");
-	test_strcmp("", "");
-	// test_strcmp("test", NULL); // crash
-	test_strcmp("test", "Test");
-	test_strcmp("Test", "test");
-	test_strcmp("test", "");
-	test_strcmp("", "test");
+	if (flg || !strcmp(argv[1], "strlen"))
+	{
+		printf("==============\n=== strlen ===\n==============\n");
+		test_strlen("test");
+		test_strlen("");
+		test_strlen("あいうえお");
+		// test_strlen(NULL); // crash
+	}
 
-	printf("\n==============\n=== write ====\n==============\n");
-	test_write(1, "test", 4);
-	test_write(1, "  ", 2);
-	// test_write(1, "", 2); // crush
-	test_write(1, "test", 2);
-	test_write(1, "123456789", 9);
-	printf("\n~~~ error case ~~~\n");
-	test_write(42, "test", 4);
-	test_write(42, "a", 1);
-	test_write(42, "123456789", 9);
+	if (flg || !strcmp(argv[1], "strcpy"))
+	{
+		printf("\n==============\n=== strcpy ===\n==============\n");
+		test_strcpy(4, "test");
+		test_strcpy(4, "A");
+		test_strcpy(4, "");
+		// test_strcpy(1, "test"); // crash
+		test_strcpy(1, "A");
+		test_strcpy(0, "");
+		// test_strcpy(4, NULL); // crash
+		// test_strcpy(0, NULL); // crash
+	}
 
-	printf("\n==============\n===  read  ===\n==============\n");
-	test_read("test.txt", 10);
-	test_read("test.txt", 5);
-	test_read("test.txt", 0);
-	test_read("test.txt", 100);
-	printf("\n~~~ error case ~~~\n");
-	test_read("nothing.txt", 10);
-	int fd = open("test.txt", O_RDONLY);
-	char *buf_libc = calloc(BUF_SIZE + 1, 1);
-	char *buf_asm = calloc(BUF_SIZE + 1, 1);
-	test_read_ex(fd, buf_libc, buf_asm, -1);
-	// test_read_ex(fd, NULL, NULL, 10); // crash
-	free(buf_libc);
-	free(buf_asm);
+	if (flg || !strcmp(argv[1], "strcmp"))
+	{
+		printf("\n==============\n=== strcmp ===\n==============\n");
+		test_strcmp("test", "test");
+		test_strcmp("a", "a");
+		test_strcmp("", "");
+		// test_strcmp("test", NULL); // crash
+		test_strcmp("test", "Test");
+		test_strcmp("Test", "test");
+		test_strcmp("test", "");
+		test_strcmp("", "test");
+	}
 
-	printf("\n==============\n=== strdup ===\n==============\n");
-	test_strdup("test");
-	test_strdup("");
-	// test_strdup(NULL); // crash
-	// test_malloc(10);
-	// test_malloc(-1); // crash
+	if (flg || !strcmp(argv[1], "write"))
+	{
+		printf("\n==============\n=== write ====\n==============\n");
+		test_write(1, "test", 4);
+		test_write(1, "  ", 2);
+		// test_write(1, "", 2); // crush
+		test_write(1, "test", 2);
+		test_write(1, "123456789", 9);
+		printf("\n~~~ error case ~~~\n");
+		test_write(42, "test", 4);
+		test_write(42, "a", 1);
+		test_write(42, "123456789", 9);
+	}
+
+	if (flg || !strcmp(argv[1], "read"))
+	{
+		printf("\n==============\n===  read  ===\n==============\n");
+		test_read("test.txt", 10);
+		test_read("test.txt", 5);
+		test_read("test.txt", 0);
+		test_read("test.txt", 100);
+		printf("\n~~~ error case ~~~\n");
+		test_read("nothing.txt", 10);
+		int fd = open("test.txt", O_RDONLY);
+		char *buf_libc = calloc(BUF_SIZE + 1, 1);
+		char *buf_asm = calloc(BUF_SIZE + 1, 1);
+		test_read_ex(fd, buf_libc, buf_asm, -1);
+		// test_read_ex(fd, NULL, NULL, 10); // crash
+		free(buf_libc);
+		free(buf_asm);
+	}
+
+	if (flg || !strcmp(argv[1], "strdup"))
+	{
+		printf("\n==============\n=== strdup ===\n==============\n");
+		test_strdup("test");
+		test_strdup("");
+		// test_strdup(NULL); // crash
+		// test_malloc(10);
+		// test_malloc(-1); // crash
+	}
+
+	if (flg || !strcmp(argv[1], "atoi"))
+	{
+		printf("\n===============\n== atoi_base ==\n===============\n");
+		test_atoi_base("111", "0123456789");
+		test_atoi_base("-222", "0123456789");
+		test_atoi_base("-++++-333a", "0123456789");
+		test_atoi_base("  	 -+-++++-+--444a", "0123456789");
+	}
 }
