@@ -12,6 +12,8 @@ _ft_lstadd_back: ; void ft_lstadd_back(t_list **lst, t_list *new)
 .check_err:
 	cmp		rdi, 0x0		;if (lst == NULL)
 	je		.ret			;	return ;
+	cmp		rsi, 0x0		;if (new == NULL)
+	je		.ret
 	cmp		QWORD[rdi], 0x0	;if (*lst == NULL)
 	jne		.get_last
 	mov		[rdi], rsi		;	*lst = new
@@ -20,14 +22,11 @@ _ft_lstadd_back: ; void ft_lstadd_back(t_list **lst, t_list *new)
 	mov		rbx, [rdi]		;	now = *lst
 .loop:						;	while(1){
 	cmp		QWORD[rbx+8], 0x0;		if (now->next == NULL)
-	je		.end			;			break
+	je		.end			;			break;
 	mov		rbx, [rbx+8]	;		now = now->next
 	jmp		.loop			;	}
 .end:
-	mov		rbx, [rbp-0x08]	;	rbx = lst
-	mov		rbx, [rbx]		;	rbx = *lst
-	mov		r12, [rbp-0x10]	;	r12 = new
-	mov		[rbx+8], r12	;	(*lst)->next = r12
+	mov		[rbx+8], rsi	;	now->next = new
 .ret:
 	pop		r12
 	pop		rbx

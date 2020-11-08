@@ -42,14 +42,12 @@ _ft_list_sort: ; void ft_list_sort(t_list **begin_list, int (*cmp)());
 	call	QWORD[rbp-0x10]			; 	rax = cmp(rdi, rsi);
 	cmp		rax, 0x0				;	if (rax <= 0) // rdi < rsi
 	jg		.less
-	mov		rdi, rbp				;	// mov rdi, rbp-0x38
-	sub		rdi, 0x38				;	rdi = &right
+	lea		rdi, [rbp-0x38]			;		rdi = &right
 	mov		rsi, QWORD[rbp-0x20]	;
 	call	_ft_lstadd_back			;		ft_lstadd_back(&right, target)
 	jmp		.loop_inc
 .less:								;	else
-	mov		rdi, rbp
-	sub		rdi, 0x30				;	rdi = &left
+	lea		rdi, [rbp-0x30]			;		rdi = &left
 	mov		rsi, QWORD[rbp-0x20]	;
 	call	_ft_lstadd_back			;		ft_lstadd_back(&left, target)
 .loop_inc:
@@ -58,20 +56,16 @@ _ft_list_sort: ; void ft_list_sort(t_list **begin_list, int (*cmp)());
 	jmp		.loop					;}
 
 .recurcive:
-	mov		rdi, rbp				; // mov rdi, rbp-0x30
-	sub		rdi, 0x30				;rdi = &left
+	lea		rdi, [rbp-0x30]			;rdi = &left
 	mov		rsi, QWORD[rbp-0x10]
 	call	_ft_list_sort			;ft_list_sort(&left, cmp);
-	mov		rdi, rbp				; // mov rdi, rbp-0x30
-	sub		rdi, 0x30				;rdi = &left
+	lea		rdi, [rbp-0x30]			;rdi = &left
 	mov		rsi, QWORD[rbp-0x18]
 	call	_ft_lstadd_back			;ft_lstadd_back(&left, std);
-	mov		rdi, rbp				; // mov rdi, rbp-0x38
-	sub		rdi, 0x38				;rdi = &right
+	lea		rdi, [rbp-0x38]			;rdi = &right
 	mov		rsi, QWORD[rbp-0x10]
 	call	_ft_list_sort			;ft_list_sort(&right, cmp);
-	mov		rdi, rbp				; // mov rdi, rbp-0x38
-	sub		rdi, 0x30				;rdi = &left
+	lea		rdi, [rbp-0x30]			;rdi = &left
 	mov		rsi, QWORD[rbp-0x38]
 	call	_ft_lstadd_back			;ft_lstadd_back(&left, right);
 	mov		rbx, QWORD[rbp-0x08]

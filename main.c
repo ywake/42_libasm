@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/08 16:51:24 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/08 18:32:23 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,12 +355,16 @@ int	main(int argc, char *argv[])
 		t_list	**begin = malloc(sizeof(t_list *));
 		*begin = NULL;
 		printf("\n==============\n==== list ====\n==============\n");
-		// printf("create_elem\n");
-		// *begin = ft_create_elem(ft_strdup("test0"));
+		printf("create_elem\n");
+		*begin = ft_create_elem(ft_strdup("test0"));
 
-		// printf("lstadd_back\n");
-		// ft_lstadd_back(begin, ft_create_elem(ft_strdup("test0'")));
-		// print_list(begin);
+		printf("lstadd_back\n");
+		ft_lstadd_back(begin, ft_create_elem(ft_strdup("test0'")));
+		print_list(begin);
+
+		printf("lstadd_back\n");
+		ft_lstadd_back(begin, ft_create_elem(ft_strdup("test0''")));
+		print_list(begin);
 
 		printf(CYAN"push_front1\n"RESET);
 		ft_list_push_front(begin, ft_strdup("test1"));
@@ -374,9 +378,9 @@ int	main(int argc, char *argv[])
 		ft_list_push_front(begin, ft_strdup("test4"));
 		print_list(begin);
 
-		// printf("↓\npush_front3\n");
-		// ft_list_push_front(begin, ft_strdup("test3"));
-		// print_list(begin);
+		printf("↓\npush_front3\n");
+		ft_list_push_front(begin, ft_strdup("test3"));
+		print_list(begin);
 
 		printf("↓\n"BOLDCYAN"ft_list_sort"RESET"\n");
 		ft_list_sort(begin, &ft_strcmp);
