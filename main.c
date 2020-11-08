@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/08 09:15:58 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/08 10:47:10 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,39 @@ void	test_atoi_base(char *str, char *base)
 	printf("atoi_base(\"%s\", \"%s\")\n => "YELLOW"%d"RESET"\n",str, base, ret_num);
 }
 
+void	print_list(t_list **begin_list)
+{
+	t_list	*now;
+	int		i;
+
+	printf(BOLD"--- print_list ---\n"RESET);
+	now = *begin_list;
+	i = 0;
+	while (now)
+	{
+		printf("%d: %p, %s, %p\n", i, now, now->data, now->next);
+		now = now->next;
+		i++;
+	}
+	printf(BOLD"---    end     ---\n"RESET);
+}
+
+void	free_list(t_list **begin_list)
+{
+	t_list	*now;
+	t_list	*tmp;
+
+	now = *begin_list;
+	while (now)
+	{
+		free(now->data);
+		now->data = NULL;
+		tmp = now->next;
+		free(now);
+		now = tmp;
+	}
+}
+
 int	main(int argc, char *argv[])
 {
 	char	flg = 0;
@@ -282,6 +315,7 @@ int	main(int argc, char *argv[])
 		// test_read_ex(fd, NULL, NULL, 10); // crash
 		free(buf_libc);
 		free(buf_asm);
+		close(fd);
 	}
 
 	if (flg || !strcmp(argv[1], "strdup"))
@@ -314,4 +348,28 @@ int	main(int argc, char *argv[])
 		test_atoi_base("100","0123456789-");
 		test_atoi_base("100","0123456788");
 	}
+
+	if (flg || !strcmp(argv[1], "list"))
+	{
+		t_list	**begin = malloc(sizeof(t_list *));
+		*begin = NULL;
+		printf("\n==============\n==== list ====\n==============\n");
+		// printf("create_elem\n");
+		// *begin = ft_create_elem("test1");
+		printf("push_front1\n");
+		ft_list_push_front(begin, ft_strdup("test1"));
+		print_list(begin);
+		printf("↓\npush_front2\n");
+		ft_list_push_front(begin, ft_strdup("test2"));
+		print_list(begin);
+
+		printf("↓\nfree_list\n");
+		free_list(begin);
+
+		printf("\n~~~ error case ~~~\n");
+		ft_list_push_front(NULL, "test2");
+	}
+
+	printf("\n↓leak check↓\n");
+	while (1);
 }
