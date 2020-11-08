@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/08 10:47:10 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/08 11:36:58 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,11 +217,12 @@ void	print_list(t_list **begin_list)
 	int		i;
 
 	printf(BOLD"--- print_list ---\n"RESET);
+	printf("list_size: "YELLOW"%d"RESET"\n",ft_list_size(*begin_list));
 	now = *begin_list;
 	i = 0;
 	while (now)
 	{
-		printf("%d: %p, %s, %p\n", i, now, now->data, now->next);
+		printf("%d: %p, "YELLOW"%s"RESET", %p\n", i, now, now->data, now->next);
 		now = now->next;
 		i++;
 	}
@@ -359,8 +360,17 @@ int	main(int argc, char *argv[])
 		printf("push_front1\n");
 		ft_list_push_front(begin, ft_strdup("test1"));
 		print_list(begin);
+
 		printf("↓\npush_front2\n");
 		ft_list_push_front(begin, ft_strdup("test2"));
+		print_list(begin);
+
+		printf("↓\npush_front4\n");
+		ft_list_push_front(begin, ft_strdup("test4"));
+		print_list(begin);
+
+		printf("↓\npush_front3\n");
+		ft_list_push_front(begin, ft_strdup("test3"));
 		print_list(begin);
 
 		printf("↓\nfree_list\n");
@@ -368,6 +378,7 @@ int	main(int argc, char *argv[])
 
 		printf("\n~~~ error case ~~~\n");
 		ft_list_push_front(NULL, "test2");
+		printf("list_size: "YELLOW"%d"RESET"\n",ft_list_size(NULL));
 	}
 
 	printf("\n↓leak check↓\n");

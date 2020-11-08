@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:29 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/08 10:05:54 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/08 11:27:00 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ char			*ft_strdup(const char *s1);
 int				ft_atoi_base(char *str, char *base);
 t_list			*ft_create_elem(void *data);
 void			ft_list_push_front(t_list **begin_list, void *data);
+int				ft_list_size(t_list *begin_list);
 
 #endif
