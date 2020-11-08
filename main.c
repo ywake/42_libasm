@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/08 07:11:44 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/08 09:15:58 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	test_strlen(char *str)
 
 	ret_libc = strlen(str);
 	ret_libasm = ft_strlen(str);
-	printf("--`"BOLD"%s"RESET"`--\n", str);
+	printf("--\""BOLD"%s"RESET"\"--\n", str);
 	printf((ret_libc == ret_libasm) ? GREEN : RED);
 	printf("libc  : %zu\n", ret_libc);
 	printf("libasm: %zu\n", ret_libasm);
@@ -46,7 +46,7 @@ void	test_strcpy(int destsize, char *src)
 	memset(dst4libc, 'a', destsize);
 
 	// testing
-	printf("--"BOLD"`%s` <= `%s`"RESET"--\n", dst4libc, src);
+	printf("--"BOLD"\"%s\" <= \"%s\""RESET"--\n", dst4libc, src);
 	char *ret_libc = strcpy(dst4libc, src);
 	char *ret_libasm = ft_strcpy(dst4libc, src);
 	printf((strcmp(ret_libc, ret_libasm) == 0) ? GREEN : RED);
@@ -61,7 +61,7 @@ void	test_strcpy(int destsize, char *src)
 
 void	test_strcmp(char *s1, char *s2)
 {
-	printf("--strcmp("BOLD"`%s`, `%s`"RESET")--\n", s1, s2);
+	printf("--strcmp("BOLD"\"%s\", \"%s\""RESET")--\n", s1, s2);
 	int	ret_libc = strcmp(s1, s2);
 	int ret_asm = ft_strcmp(s1, s2);
 	printf((ret_libc == ret_asm) ? GREEN : RED);
@@ -72,7 +72,7 @@ void	test_strcmp(char *s1, char *s2)
 
 void	test_write(int fd, char *str, int len)
 {
-	printf("--wirte("BOLD"%d, `%s`, %d"RESET")--\n", fd, str, len);
+	printf("--wirte("BOLD"%d, \"%s\", %d"RESET")--\n", fd, str, len);
 	// run libc
 	printf("libc  : "YELLOW);
 	fflush(stdout);
@@ -208,7 +208,7 @@ void	test_strdup(char *str)
 void	test_atoi_base(char *str, char *base)
 {
 	int ret_num = ft_atoi_base(str, base);
-	printf("%d\n", ret_num);
+	printf("atoi_base(\"%s\", \"%s\")\n => "YELLOW"%d"RESET"\n",str, base, ret_num);
 }
 
 int	main(int argc, char *argv[])
@@ -297,9 +297,21 @@ int	main(int argc, char *argv[])
 	if (flg || !strcmp(argv[1], "atoi"))
 	{
 		printf("\n===============\n== atoi_base ==\n===============\n");
+		printf(CYAN"%d\n"RESET,INT32_MAX);
 		test_atoi_base("111", "0123456789");
 		test_atoi_base("-222", "0123456789");
 		test_atoi_base("-++++-333a", "0123456789");
-		test_atoi_base("  	 -+-++++-+--444a", "0123456789");
+		test_atoi_base("   -+-++++-+--444a", "0123456789");
+		test_atoi_base("\t555", "0123456789");
+		test_atoi_base("  -+-+-bcdefghija", "abcdefghij");
+		test_atoi_base("177", "01234567");
+		test_atoi_base("FFa", "0123456789ABCDEF");
+
+		printf("\n~~~ error case ~~~\n");
+		test_atoi_base("100",NULL);
+		test_atoi_base("100","");
+		test_atoi_base("100","0123456789+");
+		test_atoi_base("100","0123456789-");
+		test_atoi_base("100","0123456788");
 	}
 }
