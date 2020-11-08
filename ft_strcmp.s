@@ -5,6 +5,7 @@ _ft_strcmp:
 	push	rbp
 	mov		rbp, rsp
 	xor		rax, rax
+	push	rbx
 
 .loop:
 	mov		bl, BYTE[rdi + rax]
@@ -32,5 +33,6 @@ _ft_strcmp:
 	jmp		.end
 
 .end:
+	pop		rbx
 	leave
 	ret
