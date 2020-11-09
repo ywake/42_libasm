@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/09 19:49:23 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/09 20:01:28 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,6 +369,7 @@ int	main(int argc, char *argv[])
 		test_atoi_base("100","0123456789+");
 		test_atoi_base("100","0123456789-");
 		test_atoi_base("100","0123456788");
+		test_atoi_base("1\t0111", "\t541");
 	}
 
 	if (flg || !strcmp(argv[1], "list"))

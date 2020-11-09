@@ -24,22 +24,30 @@ _ft_atoi_base: ; int ft_atoi_base(char *str, char *base)
 	call	_ft_strlen
 	mov		rdi, QWORD[rbp-0x08]
 	mov		DWORD[rbp-0x24], eax	; base_len = strlen(base);
-	xor		rbx, rbx				; i = 0
 
 .check_base:					;while(1){
+	mov		r12b, BYTE[rsi];	{
+	cmp		r12b, '+'			;	if(*base == '+')
+	je		.return				;		return(0);
+	cmp		r12b, '-'			;	if(*base == '-')
+	je		.return				;		return(0);
+	cmp		r12b, ' '			;	if (*base == ' ')
+	je		.return				;		return(0);
+	cmp		r12b, 9				;	if (*base < 9)
+	jl		.check_base_same	;		;
+	cmp		r12b, 13			;	else if (*base > 13)
+	jg		.check_base_same	;		;
+	jmp		.return				;	else{ return(0) ;}
+.check_base_same:
 	mov		rbx, 1				;	j = 1;
-.check_base_compare:			;	while(1)
+.check_base_same_loop:				;	while(1)
 	movzx	r12, BYTE[rsi + rbx];	{
 	cmp		r12, 0x0			;		if(base[j] == 0)
 	je		.check_base_inc		;			break;
-	cmp		r12b, '+'			;		else if(base[j] == '+')
-	je		.return				;			return(0);
-	cmp		r12b, '-'			;		else if(base[j] == '-')
-	je		.return				;			return(0);
 	cmp		BYTE[rsi], r12b		;		else if(*base == base[j])
 	je		.return				;			return(0);
 	inc		rbx					; 		j++;
-	jmp		.check_base_compare	;	}
+	jmp		.check_base_same_loop	;	}
 .check_base_inc:
 	inc		rsi					;	base++;
 	cmp		BYTE[rsi], 0x0		;	if(*base == 0)
