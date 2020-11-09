@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/09 18:42:32 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/09 19:49:23 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,6 @@ void	test_strdup(char *str)
 
 	free(ret_libc);
 	free(ret_asm);
-	errno = 0;
 }
 
 // void	test_malloc(int size)
@@ -298,11 +297,28 @@ int	main(int argc, char *argv[])
 		// test_write(1, "", 2); // crush
 		test_write(1, "test", 2);
 		test_write(1, "123456789", 9);
+		int fd = open("test_wirte.txt", O_WRONLY | O_APPEND | O_CREAT, 0644);
+		test_write(fd, "test\n", 5);
+
 		printf("\n~~~ error case ~~~\n");
 		test_write(42, "test", 4);
 		test_write(42, "a", 1);
 		test_write(42, "", 1);
 		test_write(42, "123456789", 9);
+		test_write(fd, NULL, 2);
+		test_write(-1, "tt", 2);
+
+		test_write(-1, "test", 5);
+		test_write(fd, NULL, 5);
+		test_write(fd, "test", 0);
+		test_write(fd, "test", 5);
+		test_write(fd, "t", 1);
+		test_write(fd, "", 0);
+		test_write(fd, "test", 4);
+		test_write(fd, "test", 2);
+		test_write(fd, NULL, 2);
+
+		close(fd);
 	}
 
 	if (flg || !strcmp(argv[1], "read"))
