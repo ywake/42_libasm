@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/09 17:45:29 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/09 18:42:32 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,6 +286,7 @@ int	main(int argc, char *argv[])
 		test_strcmp("Test", "test");
 		test_strcmp("test", "");
 		test_strcmp("", "test");
+		test_strcmp("\xff\xff", "\xff");
 	}
 
 	if (flg || !strcmp(argv[1], "write"))
