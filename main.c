@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/09 10:48:16 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/09 17:45:29 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,8 @@ int	main(int argc, char *argv[])
 		test_strcmp("a", "a");
 		test_strcmp("", "");
 		// test_strcmp("test", NULL); // crash
+		test_strcmp("test0'", "test0");
+		test_strcmp("test0", "test0'");
 		test_strcmp("test", "Test");
 		test_strcmp("Test", "test");
 		test_strcmp("test", "");
@@ -291,12 +293,14 @@ int	main(int argc, char *argv[])
 		printf("\n==============\n=== write ====\n==============\n");
 		test_write(1, "test", 4);
 		test_write(1, "  ", 2);
+		test_write(1, "", 1);
 		// test_write(1, "", 2); // crush
 		test_write(1, "test", 2);
 		test_write(1, "123456789", 9);
 		printf("\n~~~ error case ~~~\n");
 		test_write(42, "test", 4);
 		test_write(42, "a", 1);
+		test_write(42, "", 1);
 		test_write(42, "123456789", 9);
 	}
 

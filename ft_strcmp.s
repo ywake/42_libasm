@@ -11,7 +11,7 @@ _ft_strcmp: ; int ft_strcmp(const char *s1, const char *s2)
 	mov		bl, BYTE[rdi + rax]	;
 	sub		bl, BYTE[rsi + rax]	;	if ((s1[i] - s2[i]) != 0)
 	jnz		.subend				;		.subend
-	cmp		bl, 0x0				;	if (s1[i] == '\0')
+	cmp		BYTE[rdi + rax], 0x0;	if (s1[i] == '\0')
 	je		.eqend				;		.eqend
 	inc		rax					;	i++;
 	jmp		.loop				;}
