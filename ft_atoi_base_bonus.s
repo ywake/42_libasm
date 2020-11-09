@@ -17,9 +17,9 @@ _ft_atoi_base: ; int ft_atoi_base(char *str, char *base)
 	push	r13						; stash
 .init:
 	cmp		rsi, 0x0				; if (base == NULL)
-	je		.end					;	return (0);
+	je		.return					;	return (0);
 	cmp		BYTE[rsi], 0x0			; if (base[0] == '\0')
-	je		.end					;	return (0);
+	je		.return					;	return (0);
 	mov		rdi, rsi
 	call	_ft_strlen
 	mov		rdi, QWORD[rbp-0x08]
@@ -33,11 +33,11 @@ _ft_atoi_base: ; int ft_atoi_base(char *str, char *base)
 	cmp		r12, 0x0			;		if(base[j] == 0)
 	je		.check_base_inc		;			break;
 	cmp		r12b, '+'			;		else if(base[j] == '+')
-	je		.end				;			return(0);
+	je		.return				;			return(0);
 	cmp		r12b, '-'			;		else if(base[j] == '-')
-	je		.end				;			return(0);
+	je		.return				;			return(0);
 	cmp		BYTE[rsi], r12b		;		else if(*base == base[j])
-	je		.end				;			return(0);
+	je		.return				;			return(0);
 	inc		rbx					; 		j++;
 	jmp		.check_base_compare	;	}
 .check_base_inc:
@@ -78,7 +78,7 @@ _ft_atoi_base: ; int ft_atoi_base(char *str, char *base)
 	xor		r13, r13				;	j = 0;
 .search_from_base:					;	while(1){
 	cmp		BYTE[rsi + r13], 0x0	;		if (base[j] == 0)
-	je		.end					;			end;
+	je		.return					;			end;
 	cmp		r12b, BYTE[rsi + r13]	;		else if (str[i] == base[j])
 	je		.atoi					;			break;
 	inc		r13						;		j++;
@@ -91,15 +91,15 @@ _ft_atoi_base: ; int ft_atoi_base(char *str, char *base)
 	inc		rbx						;	i++;
 	jmp		.atoi_base				;}
 
+.return:
+	mov		rax, 1				; rax = 1
+	cmp		BYTE[rbp-0x14], 1	; if (!is_minus)
+	jne		.end				;	;
+	mov		rax, -1				; else { rax = -1; }
 .end:
+	mul		DWORD[rbp-0x18]		; rax *= ret_num;
 	pop		r13
 	pop		r12
 	pop		rbx
-	mov		rax, 1				; rax = 1
-	cmp		BYTE[rbp-0x14], 1	; if (!is_minus)
-	jne		.ret				;	;
-	mov		rax, -1				; else { rax = -1; }
-.ret:
-	mul		DWORD[rbp-0x18]		; rax *= ret_num;
 	leave
 	ret							; return (ret_num);
