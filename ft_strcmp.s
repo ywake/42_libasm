@@ -1,38 +1,30 @@
 section .text
 	global _ft_strcmp
 
-_ft_strcmp:
+_ft_strcmp: ; int ft_strcmp(const char *s1, const char *s2)
 	push	rbp
 	mov		rbp, rsp
-	xor		rax, rax
 	push	rbx
+	xor		rax, rax			;i = 0
 
-.loop:
-	mov		bl, BYTE[rdi + rax]
-	cmp		bl, BYTE[rsi + rax]
-	je		.equal
-	jg		.gltend
-	jmp		.lesend
-
-.equal:
-	cmp		bl, 0x0
-	je		.eqend
-	inc		rax
-	jmp		.loop
+.loop:							;while(1){
+	mov		bl, BYTE[rdi + rax]	;
+	sub		bl, BYTE[rsi + rax]	;	if ((s1[i] - s2[i]) != 0)
+	jnz		.subend				;		.subend
+	cmp		bl, 0x0				;	if (s1[i] == '\0')
+	je		.eqend				;		.eqend
+	inc		rax					;	i++;
+	jmp		.loop				;}
 
 .eqend:
-	mov		rax, 0x0
+	xor		rax, rax			;rax = 0
 	jmp		.end
 
-.gltend:
-	mov		rax, 0x1
-	jmp		.end
+.subend:
+	movsx	rax, bl
+	.end
 
-.lesend:
-	mov		rax, -0x1
-	jmp		.end
-
-.end:
+.end:							;return (rax);
 	pop		rbx
 	leave
 	ret
