@@ -3,7 +3,7 @@ extern	_ft_strlen
 section .text
 	global _ft_atoi_base
 
-_ft_atoi_base:
+_ft_atoi_base: ; int ft_atoi_base(char *str, char *base)
 	push	rbp
 	mov		rbp, rsp
 	sub		rsp, 0x30

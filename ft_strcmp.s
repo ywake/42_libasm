@@ -21,7 +21,7 @@ _ft_strcmp: ; int ft_strcmp(const char *s1, const char *s2)
 	jmp		.end
 
 .subend:
-	movsx	rax, bl
+	movsx	rax, bl				;rax = s1[i] - s2[i]
 	.end
 
 .end:							;return (rax);
