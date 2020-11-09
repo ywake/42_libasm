@@ -13,7 +13,7 @@ _ft_lstadd_back: ; void ft_lstadd_back(t_list **lst, t_list *new)
 	cmp		rdi, 0x0		;if (lst == NULL)
 	je		.ret			;	return ;
 	cmp		rsi, 0x0		;if (new == NULL)
-	je		.ret
+	je		.ret			;	return ;
 	cmp		QWORD[rdi], 0x0	;if (*lst == NULL)
 	jne		.get_last
 	mov		[rdi], rsi		;	*lst = new
