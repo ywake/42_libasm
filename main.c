@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/08 18:32:23 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/09 10:48:16 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ void	print_list(t_list **begin_list)
 	int		i;
 
 	printf(BOLD"--- print_list ---\n"RESET);
+	printf("begin: %p\n", begin_list);
 	printf("list_size: "YELLOW"%d"RESET"\n",ft_list_size(*begin_list));
 	now = *begin_list;
 	i = 0;
@@ -229,20 +230,19 @@ void	print_list(t_list **begin_list)
 	printf(BOLD"---    end     ---\n"RESET);
 }
 
-void	free_list(t_list **begin_list)
+void	free_fct(void *ptr)
 {
-	t_list	*now;
-	t_list	*tmp;
+	t_list *lst;
+	lst = (t_list *)ptr;
+	free(lst->data);
+	lst->data = NULL;
+	lst->next = NULL;
+	free(lst);
+}
 
-	now = *begin_list;
-	while (now)
-	{
-		free(now->data);
-		now->data = NULL;
-		tmp = now->next;
-		free(now);
-		now = tmp;
-	}
+int	ret_0(void)
+{
+	return 0;
 }
 
 int	main(int argc, char *argv[])
@@ -355,18 +355,19 @@ int	main(int argc, char *argv[])
 		t_list	**begin = malloc(sizeof(t_list *));
 		*begin = NULL;
 		printf("\n==============\n==== list ====\n==============\n");
-		printf("create_elem\n");
+		printf(CYAN"create_elem\n"RESET);
 		*begin = ft_create_elem(ft_strdup("test0"));
+		print_list(begin);
 
-		printf("lstadd_back\n");
+		printf("↓\n"CYAN"lstadd_back\n"RESET);
 		ft_lstadd_back(begin, ft_create_elem(ft_strdup("test0'")));
 		print_list(begin);
 
-		printf("lstadd_back\n");
+		printf("↓\n"CYAN"lstadd_back\n"RESET);
 		ft_lstadd_back(begin, ft_create_elem(ft_strdup("test0''")));
 		print_list(begin);
 
-		printf(CYAN"push_front1\n"RESET);
+		printf("↓\n"CYAN"push_front1\n"RESET);
 		ft_list_push_front(begin, ft_strdup("test1"));
 		print_list(begin);
 
@@ -384,11 +385,25 @@ int	main(int argc, char *argv[])
 
 		printf("↓\n"BOLDCYAN"ft_list_sort"RESET"\n");
 		ft_list_sort(begin, &ft_strcmp);
-		printf("%p\n", begin);
 		print_list(begin);
 
-		printf("↓\n"CYAN"free_list"RESET"\n");
-		free_list(begin);
+		printf("↓\n"CYAN"ft_list_remove_if"RESET"\n");
+		printf("drop: \"test0\"\n");
+		ft_list_remove_if(begin, "test0", ft_strcmp, free_fct);
+
+		printf("drop: \"test3\"\n");
+		ft_list_remove_if(begin, "test3", ft_strcmp, free_fct);
+		print_list(begin);
+
+		printf("↓\ndrop: \"test4\"\n");
+		ft_list_remove_if(begin, "test4", ft_strcmp, free_fct);
+		print_list(begin);
+
+		printf("↓\ndrop: \"all\"\n");
+		ft_list_remove_if(begin, "", ret_0, free_fct);
+		print_list(begin);
+
+		free(begin);
 
 		printf("\n~~~ error case ~~~\n");
 		ft_list_push_front(NULL, "test2");
