@@ -12,8 +12,9 @@ _ft_read: ; ssize_t ft_read(int fildes, void *buf, size_t nbyte)
 	jmp		.end
 
 .err:
-	mov		rbx, rax
+	push	rax
 	call	___error	;int *__error();
+	pop		rbx
 	mov		[rax], rbx	;errno = rbx
 	mov		rax, -1
 

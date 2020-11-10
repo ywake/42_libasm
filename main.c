@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/09 20:01:28 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/11 08:08:26 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,16 +307,6 @@ int	main(int argc, char *argv[])
 		test_write(42, "123456789", 9);
 		test_write(fd, NULL, 2);
 		test_write(-1, "tt", 2);
-
-		test_write(-1, "test", 5);
-		test_write(fd, NULL, 5);
-		test_write(fd, "test", 0);
-		test_write(fd, "test", 5);
-		test_write(fd, "t", 1);
-		test_write(fd, "", 0);
-		test_write(fd, "test", 4);
-		test_write(fd, "test", 2);
-		test_write(fd, NULL, 2);
 
 		close(fd);
 	}
