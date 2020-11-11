@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/11 08:08:26 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/11 13:57:42 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,7 @@ int	main(int argc, char *argv[])
 		// test_strcmp("test", NULL); // crash
 		test_strcmp("test0'", "test0");
 		test_strcmp("test0", "test0'");
+		test_strcmp("test0", "test1");
 		test_strcmp("test", "Test");
 		test_strcmp("Test", "test");
 		test_strcmp("test", "");
@@ -377,6 +378,10 @@ int	main(int argc, char *argv[])
 
 		printf("↓\n"CYAN"lstadd_back\n"RESET);
 		ft_lstadd_back(begin, ft_create_elem(ft_strdup("test0''")));
+		print_list(begin);
+
+		printf("↓\n"CYAN"push_front2\n"RESET);
+		ft_list_push_front(begin, ft_strdup("test2"));
 		print_list(begin);
 
 		printf("↓\n"CYAN"push_front1\n"RESET);

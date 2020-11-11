@@ -40,17 +40,17 @@ _ft_list_sort: ; void ft_list_sort(t_list **begin_list, int (*cmp)());
 	mov		rdi, [rdi]				;	rdi = std->data;
 	mov		rsi, [rbx]				;	rsi = target->data;
 	call	QWORD[rbp-0x10]			; 	rax = cmp(rdi, rsi);
-	cmp		rax, 0x0				;	if (rax <= 0) // rdi < rsi
-	jg		.less
+	cmp		eax, 0x0				;	if (eax <= 0) // rdi < rsi
+	jg		.less					;	{
 	lea		rdi, [rbp-0x38]			;		rdi = &right
 	mov		rsi, QWORD[rbp-0x20]	;
 	call	_ft_lstadd_back			;		ft_lstadd_back(&right, target)
-	jmp		.loop_inc
-.less:								;	else
+	jmp		.loop_inc				;	}
+.less:								;	else{
 	lea		rdi, [rbp-0x30]			;		rdi = &left
 	mov		rsi, QWORD[rbp-0x20]	;
 	call	_ft_lstadd_back			;		ft_lstadd_back(&left, target)
-.loop_inc:
+.loop_inc:							;	}
 	mov		rbx, QWORD[rbp-0x28]
 	mov 	QWORD[rbp-0x20], rbx	; target = next
 	jmp		.loop					;}
