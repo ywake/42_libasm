@@ -6,7 +6,7 @@
 /*   By: ywake <ywake@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:12:16 by ywake             #+#    #+#             */
-/*   Updated: 2020/11/11 13:57:42 by ywake            ###   ########.fr       */
+/*   Updated: 2020/11/13 15:18:41 by ywake            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ void	test_strcmp(char *s1, char *s2)
 	printf(RESET);
 }
 
-void	test_write(int fd, char *str, int len)
+void	test_write(int fd, char *str, size_t len)
 {
-	printf("--wirte("BOLD"%d, \"%s\", %d"RESET")--\n", fd, str, len);
+	printf("--wirte("BOLD"%d, \"%s\", %zu"RESET")--\n", fd, str, len);
 	// run libc
 	printf("libc  : "YELLOW);
 	fflush(stdout);
@@ -298,6 +298,7 @@ int	main(int argc, char *argv[])
 		// test_write(1, "", 2); // crush
 		test_write(1, "test", 2);
 		test_write(1, "123456789", 9);
+		// test_write(1, "123456789", 1000);
 		int fd = open("test_wirte.txt", O_WRONLY | O_APPEND | O_CREAT, 0644);
 		test_write(fd, "test\n", 5);
 
@@ -308,6 +309,7 @@ int	main(int argc, char *argv[])
 		test_write(42, "123456789", 9);
 		test_write(fd, NULL, 2);
 		test_write(-1, "tt", 2);
+		test_write(1, "123456789", -1);
 
 		close(fd);
 	}
@@ -321,9 +323,14 @@ int	main(int argc, char *argv[])
 		test_read("test.txt", 100);
 		printf("\n~~~ error case ~~~\n");
 		test_read("nothing.txt", 10);
-		int fd = open("test.txt", O_RDONLY);
 		char *buf_libc = calloc(BUF_SIZE + 1, 1);
 		char *buf_asm = calloc(BUF_SIZE + 1, 1);
+		test_read_ex(-1, buf_libc, buf_asm, BUF_SIZE);
+		if (argc == 2 && strcmp(argv[1], "read") == 0)
+			test_read_ex(0, buf_libc, buf_asm, BUF_SIZE);
+		bzero(buf_libc, BUF_SIZE+1);
+		bzero(buf_asm, BUF_SIZE+1);
+		int fd = open("test.txt", O_RDONLY);
 		test_read_ex(fd, buf_libc, buf_asm, -1);
 		// test_read_ex(fd, NULL, NULL, 10); // crash
 		free(buf_libc);
@@ -361,6 +368,7 @@ int	main(int argc, char *argv[])
 		test_atoi_base("100","0123456789-");
 		test_atoi_base("100","0123456788");
 		test_atoi_base("1\t0111", "\t541");
+		test_atoi_base(" + -123", "0123456789");
 	}
 
 	if (flg || !strcmp(argv[1], "list"))
@@ -392,11 +400,11 @@ int	main(int argc, char *argv[])
 		ft_list_push_front(begin, ft_strdup("test2"));
 		print_list(begin);
 
-		printf("↓\npush_front4\n");
+		printf("↓\n"CYAN"push_front4\n"RESET);
 		ft_list_push_front(begin, ft_strdup("test4"));
 		print_list(begin);
 
-		printf("↓\npush_front3\n");
+		printf("↓\n"CYAN"push_front3\n"RESET);
 		ft_list_push_front(begin, ft_strdup("test3"));
 		print_list(begin);
 
