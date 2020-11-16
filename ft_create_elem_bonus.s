@@ -9,7 +9,7 @@ _ft_create_elem: ; t_list *ft_create_elem(void *data)
 	sub		rsp, 0x20
 	mov		QWORD[rbp-0x08], rdi	;void *data
 	mov		QWORD[rbp-0x10], 0x0	;t_list *lst = NULL;
-	mov		edi, 16
+	mov		rdi, 16
 	call	_malloc
 	cmp		rax, 0x0
 	je		.err
